@@ -5,34 +5,31 @@ import java.util.List;
 
 public class Face {
 
-    int indexVector1;
-    int indexVector2;
-    int indexVector3;
+    private int indexFace;
+    private int[] vertexIndices;
 
-    public Face(int indexVector1, int indexVector2, int indexVector3) {
-        this.indexVector1 = indexVector1;
-        this.indexVector2 = indexVector2;
-        this.indexVector3 = indexVector3;
+    public Face(int indexFace, int v1, int v2, int v3) {
+        this.indexFace = indexFace;
+        this.vertexIndices = new int[]{v1, v2, v3};
     }
 
-    public List<Integer> getFace(){
-        ArrayList<Integer> indexes = new ArrayList<Integer>();
-        indexes.add(indexVector1);
-        indexes.add(indexVector2);
-        indexes.add(indexVector3);
-
-        return indexes;
+    public int[] getVertexIndices(){
+        return vertexIndices;
     }
 
     public int getIndexVector1() {
-        return indexVector1;
+        return vertexIndices.length > 0 ? vertexIndices[0] : -1;
     }
 
     public int getIndexVector2() {
-        return indexVector2;
+        return vertexIndices.length > 1 ? vertexIndices[1] : -1;
     }
 
     public int getIndexVector3() {
-        return indexVector3;
+        return vertexIndices.length > 2 ? vertexIndices[2] : -1;
+    }
+
+    public int getIndexFace() {
+        return indexFace;
     }
 }
