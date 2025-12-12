@@ -2,32 +2,49 @@ package ru.vsu.fkn.cg.task3;
 
 public class Vector3D {
 
-    private int x;
-    private int y;
-    private int z;
-    private int w;
+    private double x;
+    private double y;
+    private double z;
+    private double w;
 
-    public Vector3D(int x, int y, int z, int w) {
+    private static final double Epsilon = 1e-6;
+
+    public Vector3D(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.w = w;
+        //this.w = w;
     }
 
-    public Vector3D(int x, int y, int z) {
+    public Vector3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
+    public double length(){
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    public Vector3D normalize(){
+        double length = this.length();
+
+        if (Math.abs(length) < Epsilon){
+            throw new ArithmeticException("Ошибка деления на 0. Передан нулевой вектор");
+        }
+
+        return Vector3D.divide(this, length);
+    }
+
+    //===========СТАТИЧНЫЕ МЕТОДЫ===========
     public static Vector3D cross(Vector3D vector1, Vector3D vector2){
-        int x = vector1.getY() * vector2.getZ() - vector1.getZ() * vector2.getY();
-        int y = vector1.getZ() * vector2.getX() - vector1.getX() * vector2.getZ();
-        int z = vector1.getX() * vector2.getY() - vector1.getY() * vector2.getX();
+        double x = vector1.getY() * vector2.getZ() - vector1.getZ() * vector2.getY();
+        double y = vector1.getZ() * vector2.getX() - vector1.getX() * vector2.getZ();
+        double z = vector1.getX() * vector2.getY() - vector1.getY() * vector2.getX();
         return new Vector3D(x, y, z);
     }
 
-    public static int dot(Vector3D vector1, Vector3D vector2){
+    public static double dot(Vector3D vector1, Vector3D vector2){
         return vector1.getX() * vector2.getX() +
                 vector1.getY() * vector2.getY() +
                 vector1.getZ() * vector2.getZ();
@@ -36,69 +53,111 @@ public class Vector3D {
     public static Vector3D divide(Vector3D vector1, Vector3D vector2){
 
         if (vector2.hasZero()){
-            throw new ArithmeticException("У вектора присутствует нулевая координата");
+            throw new ArithmeticException("Деление на нулевой вектор. " +
+                                        "У вектора присутствует нулевая координата");
         }
 
-        int x = vector1.getX() / vector2.getX();
-        int y = vector1.getY() / vector2.getY();
-        int z = vector1.getZ() / vector2.getZ();
+        double x = vector1.getX() / vector2.getX();
+        double y = vector1.getY() / vector2.getY();
+        double z = vector1.getZ() / vector2.getZ();
         return new Vector3D(x, y, z);
     }
 
+    public static Vector3D divide(Vector3D vector, double scalar){
+        if (Math.abs(scalar) < Epsilon){
+            throw new ArithmeticException("Деление на 0. Скаляр близок к нулю");
+        }
+
+        double invScalar = 1 / scalar;
+        double x = vector.getX() * invScalar;
+        double y = vector.getY() * invScalar;
+        double z = vector.getZ() * invScalar;
+
+        return new Vector3D(x, y, z);
+    }
+
+    public static Vector3D negative(Vector3D vector){
+        return new Vector3D(-vector.getX(), -vector.getY(), -vector.getZ());
+    }
+
     public static Vector3D multiply(Vector3D vector1, Vector3D vector2){
-        int x = vector1.getX() * vector2.getX();
-        int y = vector1.getY() * vector2.getY();
-        int z = vector1.getZ() * vector2.getZ();
+        double x = vector1.getX() * vector2.getX();
+        double y = vector1.getY() * vector2.getY();
+        double z = vector1.getZ() * vector2.getZ();
+        return new Vector3D(x, y, z);
+    }
+
+    public static Vector3D multiply(Vector3D vector, double scalar){
+        double x = vector.getX() * scalar;
+        double y = vector.getY() * scalar;
+        double z = vector.getZ() * scalar;
+
         return new Vector3D(x, y, z);
     }
 
     public static Vector3D sum(Vector3D vector1, Vector3D vector2){
-        int x = vector1.getX() + vector2.getX();
-        int y = vector1.getY() + vector2.getY();
-        int z = vector1.getZ() + vector2.getZ();
+        double x = vector1.getX() + vector2.getX();
+        double y = vector1.getY() + vector2.getY();
+        double z = vector1.getZ() + vector2.getZ();
         return new Vector3D(x, y, z);
     }
 
     public static Vector3D minus(Vector3D vector1, Vector3D vector2){
-        int x = vector1.getX() - vector2.getX();
-        int y = vector1.getY() - vector2.getY();
-        int z = vector1.getZ() - vector2.getZ();
+        double x = vector1.getX() - vector2.getX();
+        double y = vector1.getY() - vector2.getY();
+        double z = vector1.getZ() - vector2.getZ();
         return new Vector3D(x, y, z);
     }
 
-    private boolean hasZero(){
-        return this.x == 0 || this.y == 0 || this.z == 0;
+    public static double length(Vector3D vector){
+        double x = vector.getX() * vector.getX();
+        double y = vector.getY() * vector.getY();
+        double z = vector.getZ() * vector.getZ();
+
+        return Math.sqrt(x + y + z);
     }
 
-    public void setX(int x) {
+    public static Vector3D normalize(Vector3D vector){
+        return vector.normalize();
+    }
+
+    //===========ПРИВАТНЫЕ МЕТОДЫ===========
+    private boolean hasZero(){
+        return Math.abs(this.x) < Epsilon ||
+                Math.abs(this.y) < Epsilon ||
+                Math.abs(this.z) < Epsilon;
+    }
+
+    //===========ГЕТТЕРЫ И СЕТТЕРЫ===========
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public void setZ(int z) {
+    public void setZ(double z) {
         this.z = z;
     }
 
-    public void setW(int w) {
+    public void setW(double w) {
         this.w = w;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public int getZ() {
+    public double getZ() {
         return z;
     }
 
-    public int getW() {
+    public double getW() {
         return w;
     }
 }
