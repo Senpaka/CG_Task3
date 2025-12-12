@@ -22,6 +22,12 @@ public class Vector3D {
         this.z = z;
     }
 
+    public Vector3D(){
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+
     public double length(){
         return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
@@ -102,7 +108,7 @@ public class Vector3D {
         return new Vector3D(x, y, z);
     }
 
-    public static Vector3D minus(Vector3D vector1, Vector3D vector2){
+    public static Vector3D subtract(Vector3D vector1, Vector3D vector2){
         double x = vector1.getX() - vector2.getX();
         double y = vector1.getY() - vector2.getY();
         double z = vector1.getZ() - vector2.getZ();
