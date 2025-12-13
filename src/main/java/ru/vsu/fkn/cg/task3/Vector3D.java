@@ -2,10 +2,10 @@ package ru.vsu.fkn.cg.task3;
 
 public class Vector3D {
 
-    private double x;
-    private double y;
-    private double z;
-    private double w;
+    private final double x;
+    private final double y;
+    private final double z;
+    private final double w;
 
     private static final double Epsilon = 1e-6;
 
@@ -13,19 +13,21 @@ public class Vector3D {
         this.x = x;
         this.y = y;
         this.z = z;
-        //this.w = w;
+        this.w = w;
     }
 
     public Vector3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.w = 0;
     }
 
     public Vector3D(){
         this.x = 0;
         this.y = 0;
         this.z = 0;
+        this.w = 0;
     }
 
     public double length(){
@@ -47,6 +49,7 @@ public class Vector3D {
         double x = vector1.getY() * vector2.getZ() - vector1.getZ() * vector2.getY();
         double y = vector1.getZ() * vector2.getX() - vector1.getX() * vector2.getZ();
         double z = vector1.getX() * vector2.getY() - vector1.getY() * vector2.getX();
+
         return new Vector3D(x, y, z);
     }
 
@@ -54,19 +57,6 @@ public class Vector3D {
         return vector1.getX() * vector2.getX() +
                 vector1.getY() * vector2.getY() +
                 vector1.getZ() * vector2.getZ();
-    }
-
-    public static Vector3D divide(Vector3D vector1, Vector3D vector2){
-
-        if (vector2.hasZero()){
-            throw new ArithmeticException("Деление на нулевой вектор. " +
-                                        "У вектора присутствует нулевая координата");
-        }
-
-        double x = vector1.getX() / vector2.getX();
-        double y = vector1.getY() / vector2.getY();
-        double z = vector1.getZ() / vector2.getZ();
-        return new Vector3D(x, y, z);
     }
 
     public static Vector3D divide(Vector3D vector, double scalar){
@@ -78,7 +68,6 @@ public class Vector3D {
         double x = vector.getX() * invScalar;
         double y = vector.getY() * invScalar;
         double z = vector.getZ() * invScalar;
-
         return new Vector3D(x, y, z);
     }
 
@@ -97,7 +86,6 @@ public class Vector3D {
         double x = vector.getX() * scalar;
         double y = vector.getY() * scalar;
         double z = vector.getZ() * scalar;
-
         return new Vector3D(x, y, z);
     }
 
@@ -115,41 +103,7 @@ public class Vector3D {
         return new Vector3D(x, y, z);
     }
 
-    public static double length(Vector3D vector){
-        double x = vector.getX() * vector.getX();
-        double y = vector.getY() * vector.getY();
-        double z = vector.getZ() * vector.getZ();
-
-        return Math.sqrt(x + y + z);
-    }
-
-    public static Vector3D normalize(Vector3D vector){
-        return vector.normalize();
-    }
-
-    //===========ПРИВАТНЫЕ МЕТОДЫ===========
-    private boolean hasZero(){
-        return Math.abs(this.x) < Epsilon ||
-                Math.abs(this.y) < Epsilon ||
-                Math.abs(this.z) < Epsilon;
-    }
-
     //===========ГЕТТЕРЫ И СЕТТЕРЫ===========
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
-
-    public void setW(double w) {
-        this.w = w;
-    }
 
     public double getX() {
         return x;
