@@ -2,32 +2,22 @@ package ru.vsu.fkn.cg.task3;
 
 public class Vector3D {
 
-    private final double x;
-    private final double y;
-    private final double z;
-    private final double w;
+    public double x;
+    public double y;
+    public double z;
 
     private static final double Epsilon = 1e-6;
-
-    public Vector3D(double x, double y, double z, double w) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
-    }
 
     public Vector3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.w = 0;
     }
 
     public Vector3D(){
         this.x = 0;
         this.y = 0;
         this.z = 0;
-        this.w = 0;
     }
 
     public double length(){
@@ -44,7 +34,6 @@ public class Vector3D {
         return Vector3D.divide(this, length);
     }
 
-    //===========СТАТИЧНЫЕ МЕТОДЫ===========
     public static Vector3D cross(Vector3D vector1, Vector3D vector2){
         double x = vector1.getY() * vector2.getZ() - vector1.getZ() * vector2.getY();
         double y = vector1.getZ() * vector2.getX() - vector1.getX() * vector2.getZ();
@@ -103,8 +92,6 @@ public class Vector3D {
         return new Vector3D(x, y, z);
     }
 
-    //===========ГЕТТЕРЫ И СЕТТЕРЫ===========
-
     public double getX() {
         return x;
     }
@@ -117,7 +104,15 @@ public class Vector3D {
         return z;
     }
 
-    public double getW() {
-        return w;
+    public boolean equals(Vector3D v){
+        boolean a = (this.getX() - v.getX()) < Epsilon;
+        boolean b = (this.getY() - v.getY()) < Epsilon;
+        boolean c = (this.getZ() - v.getZ()) < Epsilon;
+        return a && b && c;
+    }
+
+    @Override
+    public String toString(){
+        return x + " " + y + " " + z;
     }
 }

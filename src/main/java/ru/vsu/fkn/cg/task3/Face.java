@@ -8,9 +8,9 @@ public class Face {
     private int indexFace;
     private int[] vertexIndices;
 
-    public Face(int indexFace, int v1, int v2, int v3) {
+    public Face(int indexFace, int[] array) {
         this.indexFace = indexFace;
-        this.vertexIndices = new int[]{v1, v2, v3};
+        this.vertexIndices = array;
     }
 
     public int[] getVertexIndices(){

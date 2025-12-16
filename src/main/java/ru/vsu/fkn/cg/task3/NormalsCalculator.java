@@ -17,12 +17,44 @@ public class NormalsCalculator {
 
         Vector3D centerModelToFace = Vector3D.subtract(centerModel, centerFace);
 
-        if (Vector3D.dot(normal, centerModelToFace) < 0){
+
+        if (Vector3D.dot(normal, centerModelToFace) > 0){
             normal = Vector3D.negative(normal);
         }
 
         return normal.normalize();
     }
+
+    public Vector3D calculateNFaceNormal(List<Vector3D> faceVertices, Vector3D centerModel) {
+        if (faceVertices.size() < 3) {
+            return new Vector3D(0, 1, 0);
+        }
+
+        Vector3D normal = new Vector3D(0, 0, 0);
+
+        for (int i = 0; i < faceVertices.size(); i++) {
+            Vector3D current = faceVertices.get(i);
+            Vector3D next = faceVertices.get((i + 1) % faceVertices.size());
+
+            normal = Vector3D.sum(normal, Vector3D.cross(current, next));
+        }
+
+        Vector3D centerFace = new Vector3D();
+
+        for (Vector3D vertex : faceVertices) {
+            centerFace = Vector3D.sum(centerFace, vertex);
+        }
+        centerFace = Vector3D.divide(centerFace, faceVertices.size());
+
+        Vector3D centerModelToFace = Vector3D.subtract(centerModel, centerFace);
+
+        if (Vector3D.dot(normal, centerModelToFace) > 0) {
+            normal = Vector3D.negative(normal);
+        }
+
+        return normal.normalize();
+    }
+
 
     public List<Vector3D> calculateFaceNormals(Mesh mesh){
         List<Vector3D> vertices = mesh.getVertices();
@@ -31,15 +63,15 @@ public class NormalsCalculator {
         List<Vector3D> faceNormals = new ArrayList<>();
         Vector3D centerModel = calculateCenterModel(mesh.getVertices());
 
-        for (Face face: faces){
-
+        for (Face face : faces) {
             int[] indices = face.getVertexIndices();
+            List<Vector3D> faceVertices = new ArrayList<>();
 
-            Vector3D vector1 = vertices.get(indices[0]);
-            Vector3D vector2 = vertices.get(indices[1]);
-            Vector3D vector3 = vertices.get(indices[2]);
+            for (int index : indices) {
+                faceVertices.add(vertices.get(index));
+            }
 
-            Vector3D normal = calculateTriangleNormal(vector1, vector2, vector3, centerModel);
+            Vector3D normal = calculateNFaceNormal(faceVertices, centerModel);
             faceNormals.add(normal);
         }
 
@@ -84,17 +116,6 @@ public class NormalsCalculator {
         }
 
         return verticesNormals;
-    }
-
-    private Vector3D[] getFaceVertices(Face face, List<Vector3D> vertices){
-        int[] indices = face.getVertexIndices();
-        Vector3D[] verticesArray = new Vector3D[indices.length];
-
-        for (int i = 0; i < indices.length; i++) {
-            verticesArray[i] = vertices.get(indices[i]);
-        }
-
-        return verticesArray;
     }
 
     private Vector3D calculateCenterModel(List<Vector3D> vertices){
