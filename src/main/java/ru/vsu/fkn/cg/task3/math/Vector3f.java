@@ -3,7 +3,7 @@ package ru.vsu.fkn.cg.task3.math;
 // Это заготовка для собственной библиотеки для работы с линейной алгеброй
 public class Vector3f {
 
-    private static final double EPSILON = 1e-15;
+    private static final float EPSILON = 1e-4f;
 
     public Vector3f(float x, float y, float z) {
         this.x = x;
@@ -19,8 +19,7 @@ public class Vector3f {
 
     public boolean equals(Vector3f other) {
         // todo: желательно, чтобы это была глобальная константа
-        final float eps = 1e-7f;
-        return Math.abs(x - other.x) < eps && Math.abs(y - other.y) < eps && Math.abs(z - other.z) < eps;
+        return Math.abs(x - other.x) < EPSILON && Math.abs(y - other.y) < EPSILON && Math.abs(z - other.z) < EPSILON;
     }
 
     public static Vector3f cross(Vector3f vector1, Vector3f vector2){
