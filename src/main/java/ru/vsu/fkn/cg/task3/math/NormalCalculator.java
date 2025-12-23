@@ -1,5 +1,6 @@
 package ru.vsu.fkn.cg.task3.math;
 
+import ru.vsu.fkn.cg.task3.model.Model;
 import ru.vsu.fkn.cg.task3.model.Polygon;
 
 import java.util.ArrayList;
@@ -8,19 +9,25 @@ import java.util.Map;
 
 public class NormalCalculator {
 
-    public static ArrayList<Vector3f> calculateVerticesNormals(
-            ArrayList<Vector3f> vertices,
-            ArrayList<Polygon> polygons) {
+    public static void calculateVerticesNormals(Model model) {
+        ArrayList<Vector3f> vertices =  model.vertices;
+        model.normals.clear();
 
-        ArrayList<Vector3f> normals = new ArrayList<>(vertices.size());
+        ArrayList<Vector3f> normals = model.normals;
         Map<Integer, Vector3f> sumNormals = new HashMap<>();
 
         for (int i = 0; i < vertices.size(); i++) {
             sumNormals.put(i, new Vector3f());
         }
 
-        for (Polygon polygon : polygons) {
+        for (Polygon polygon : model.polygons) {
             ArrayList<Integer> indices = polygon.getVertexIndices();
+
+            ArrayList<Integer> normalIndices = polygon.getNormalIndices();
+            normalIndices.clear();
+            normalIndices.addAll(indices);
+
+            
             if (indices.size() < 3) continue;
 
             Vector3f v0 = vertices.get(indices.get(0));
@@ -47,8 +54,6 @@ public class NormalCalculator {
                 normals.add(n);
             }
         }
-
-        return normals;
     }
 
     public static Vector3f calculatePolygonNormal(

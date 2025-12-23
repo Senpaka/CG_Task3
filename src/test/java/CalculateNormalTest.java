@@ -30,14 +30,14 @@ public class CalculateNormalTest {
     @Test
     void normalTest(){
 
-        ArrayList<Vector3f> trueNormal = model.normals;
-        ArrayList<Vector3f> myNormal = NormalCalculator.calculateVerticesNormals(model.vertices, model.polygons);
+        ArrayList<Vector3f> trueNormal = (ArrayList<Vector3f>) model.normals.clone();
+        NormalCalculator.calculateVerticesNormals(model);
 
-        for(int i = 0; i < myNormal.size(); i++){
+        for(int i = 0; i < model.normals.size(); i++){
             System.out.println(trueNormal.get(i));
-            System.out.println(myNormal.get(i));
+            System.out.println(model.normals.get(i));
             System.out.println("===========");
-            assertTrue(myNormal.get(i).equals(trueNormal.get(i)));
+            assertTrue(model.normals.get(i).equals(trueNormal.get(i)));
         }
     }
 

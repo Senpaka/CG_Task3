@@ -2,6 +2,7 @@ package ru.vsu.fkn.cg.task3.objreader;
 
 
 
+import ru.vsu.fkn.cg.task3.exeptions.ObjReaderException;
 import ru.vsu.fkn.cg.task3.math.Vector2f;
 import ru.vsu.fkn.cg.task3.math.Vector3f;
 import ru.vsu.fkn.cg.task3.model.Model;
