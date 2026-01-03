@@ -9,6 +9,12 @@ import java.util.Map;
 
 public class NormalCalculator {
 
+    /**
+     * Высчитывает нормали вершин объекта
+     * (при необходимости пересчитывает)
+     *
+     * @param model объект
+     */
     public static void calculateVerticesNormals(Model model) {
         ArrayList<Vector3f> vertices =  model.vertices;
         model.normals.clear();
