@@ -33,7 +33,6 @@ public class NormalCalculator {
             normalIndices.clear();
             normalIndices.addAll(indices);
 
-            
             if (indices.size() < 3) continue;
 
             Vector3f v0 = vertices.get(indices.get(0));
@@ -43,24 +42,34 @@ public class NormalCalculator {
             Vector3f edge1 = Vector3f.subtract(v1, v0);
             Vector3f edge2 = Vector3f.subtract(v2, v0);
 
-            Vector3f faceNormal = Vector3f.cross(edge1, edge2);
+            Vector3f polygonNormal = Vector3f.cross(edge1, edge2);
 
             for (int idx : indices) {
-                sumNormals.get(idx).sum(faceNormal);
+                sumNormals.get(idx).sum(polygonNormal);
             }
         }
 
         for (int i = 0; i < vertices.size(); i++) {
-            Vector3f n = sumNormals.get(i);
+            Vector3f normal = sumNormals.get(i);
 
-            if (n.length() == 0) {
+            if (normal.length() == 0) {
                 normals.add(new Vector3f(0, 0, 0));
             } else {
-                n.normalize();
-                normals.add(n);
+                normal.normalize();
+                normals.add(normal);
             }
         }
     }
+
+    /**
+     * высчитывает нормаль полигона
+     * (сделано на всякий случай)
+     *
+     * @param v0 1 вектор
+     * @param v1 2 вектор
+     * @param v2 3 вектор
+     * @return посчитанную нормаль полигона
+     */
 
     public static Vector3f calculatePolygonNormal(
             Vector3f v0, Vector3f v1, Vector3f v2) {
